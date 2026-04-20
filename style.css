@@ -1,0 +1,327 @@
+/* --- COLORS & THEME --- */
+:root {
+    --neon-pink: #ff0050;
+    --neon-blue: #00f2ea;
+    --dark: #121212;
+    --glass: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    margin: 0; background: var(--dark); color: white;
+    font-family: sans-serif; height: 100vh; overflow: hidden;
+}
+
+/* --- HD VIDEO FEED --- */
+.video-card {
+    height: 100vh; width: 100vw; position: relative;
+    scroll-snap-align: start; background: #000;
+}
+
+video {
+    width: 100%; height: 100%; object-fit: cover;
+}
+
+/* --- RIGHT SIDEBAR BUTTONS --- */
+.right-sidebar {
+    position: absolute; right: 10px; bottom: 120px;
+    display: flex; flex-direction: column; gap: 15px;
+    z-index: 10;
+}
+
+.btn-circle {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: var(--glass); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white; font-size: 20px;
+}
+
+/* --- FRIENDS & PROFILE LISTS --- */
+.friends-list {
+    padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+}
+
+.friend-card {
+    background: var(--glass); border: 1px solid var(--neon-blue);
+    border-radius: 12px; padding: 10px; text-align: center;
+}
+
+.add-btn {
+    background: var(--neon-blue); border: none; padding: 5px 10px;
+    border-radius: 20px; font-weight: bold; margin-top: 5px;
+}
+
+/* Navigation Bar at Bottom */
+nav {
+    position: fixed; bottom: 0; width: 100%;
+    display: flex; justify-content: space-around;
+    background: #1e1e1e; padding: 15px 0; border-top: 1px solid var(--glass);
+}
+
+    /* In your style.css */
+section {
+  transition: opacity 0.3s ease-in-out;
+}
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.profile-actions button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.1s;
+}
+
+.profile-actions button:active {
+  transform: scale(0.95);
+}
+
+#follow-btn {
+  background-color: #007bff;
+  color: white;
+}
+ #profile-section {
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent */
+  backdrop-filter: blur(10px);          /* Frosted glass effect */
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 20px;
+}
+/* Ensure the feed takes up the full viewport minus the nav bar */
+.feed-container {
+    height: calc(100vh - 60px); 
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory; /* Makes it feel like TikTok/Reels */
+}
+
+.video-post {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    scroll-snap-align: start;
+    background-color: #000;
+}
+
+.side-actions {
+    position: absolute;
+    right: 15px;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.action-btn {
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 0.8rem;
+}
+.notification-toast {
+    position: fixed;
+    top: -100px; /* Hidden by default */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: top 0.5s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ff4b2b; /* Fexit accent color */
+}
+
+.notification-toast.show {
+    top: 20px; /* Slide down into view */
+}
+.user-profile-trigger {
+    position: relative;
+    margin-bottom: 15px; /* Space between profile and like button */
+    cursor: pointer;
+}
+
+.avatar-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+}
+
+.follow-badge {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff4b2b; /* Fexit Red/Orange */
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Ensure side-actions are centered vertically */
+.side-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the avatar and buttons horizontally */
+}
+.follow-badge {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff4b2b; /* Original Red */
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* The "Correct/Followed" State */
+.follow-badge.is-followed {
+    background: #2ecc71; /* Green success color */
+    transform: translateX(-50%) scale(1.1);
+}
+.side-actions {
+    position: absolute;
+    right: 15px;
+    bottom: 120px; /* Adjusted to give more room */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px; /* Space between buttons */
+    z-index: 10;
+}
+
+.user-profile-container {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.avatar-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: #444;
+}
+
+.follow-badge {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff4b2b;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #000; /* Makes it "pop" off the photo */
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+/* The Blue Verified State we talked about */
+.follow-badge.is-followed {
+    background: #1DA1F2 !important; 
+    border-color: white;
+}
+.heart-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 80px;
+    opacity: 0;
+    pointer-events: none; /* So it doesn't block clicks */
+    z-index: 100;
+}
+
+.heart-pop-anim {
+    animation: heartAppear 0.8s ease-out;
+}
+
+@keyframes heartAppear {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    30% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+.comment-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70vh; /* Covers 70% of the screen */
+    background: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 2000;
+    transform: translateY(100%); /* Hidden by default */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    color: black;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-drawer.open {
+    transform: translateY(0); /* Slide up */
+}
+
+.drawer-handle {
+    width: 40px;
+    height: 5px;
+    background: #ccc;
+    border-radius: 10px;
+    margin: 0 auto 15px;
+}
+
+.comment-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: flex-start;
+}
+
+.comment-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.comment-input-area {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}

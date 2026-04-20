@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
+</html><style>
+    :root {
+        --neon-pink: #ff0050;
+        --neon-blue: #00f2ea;
+        --glass: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+        margin: 0; background: #000; color: white;
+        font-family: 'Inter', sans-serif; height: 100vh; display: flex; flex-direction: column;
+    }
+
+    /* --- HD VIDEO CONTAINER --- */
+    .video-card {
+        height: 100vh; width: 100vw; position: relative;
+        scroll-snap-align: start; overflow: hidden;
+    }
+
+    video {
+        width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* --- SIDEBAR ACTIONS --- */
+    .right-sidebar {
+        position: absolute; right: 10px; bottom: 120px;
+        display: flex; flex-direction: column; align-items: center; gap: 15px;
+    }
+
+    .action-group { text-align: center; font-size: 12px; font-weight: bold; }
+
+    .btn-circle {
+        width: 50px; height: 50px; border-radius: 50%;
+        background: var(--glass); backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white; font-size: 22px; display: flex;
+        align-items: center; justify-content: center;
+        box-shadow: 0 0 15px rgba(0, 242, 234, 0.3);
+    }
+
+    /* --- USER INFO OVERLAY --- */
+    .video-info {
+        position: absolute; bottom: 100px; left: 15px; width: 70%;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    }
+
+    .username { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; color: var(--neon-blue); }
+    .region-tag { 
+        background: var(--neon-pink); padding: 2px 8px; 
+        border-radius: 4px; font-size: 10px; text-transform: uppercase;
+    }
+
+    /* --- DOUBLE TAP HEART ANIMATION --- */
+    .heart-pop {
+        position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        color: var(--neon-pink); font-size: 80px;
+        pointer-events: none; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .heart-pop.active { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+
+    /* --- HD PROGRESS BAR --- */
+    .progress-container {
+        position: absolute; bottom: 85px; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.1);
+    }
+    .progress-bar { height: 100%; background: var(--neon-blue); width: 0%; box-shadow: 0 0 10px var(--neon-blue); }
+
+</style>
+
+<div id="main-feed">
+    <div class="video-card" ondblclick="animateHeart(this)">
+        <video id="vid1" autoplay muted loop playsinline ontimeupdate="updateProgress(this)">
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        </video>
+        
+        <div class="heart-pop">❤️</div>
+
+        <div class="video-info">
+            <div class="username">@Alex_Fexin <span class="region-tag">🌍 West Africa</span></div>
+            <p>Check out this HD view! #Fexin #NewApp</p>
+        </div>
+
+        <div class="right-sidebar">
+            <div class="action-group">
+                <button class="btn-circle" onclick="likeVideo(this)">❤️</button>
+                <span>1.2k</span>
+            </div>
+            <div class="action-group">
+                <button class="btn-circle">💬</button>
+                <span>45</span>
+            </div>
+            <div class="action-group">
+                <button class="btn-circle" onclick="shareVideo()">🔗</button>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="pb1"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Double Tap Heart Logic
+    function animateHeart(card) {
+        const heart = card.querySelector('.heart-pop');
+        heart.classList.add('active');
+        setTimeout(() => {
+            heart.classList.remove('active');
+        }, 800);
+        
+        // Trigger the like logic automatically
+        const likeBtn = card.querySelector('.btn-circle');
+        likeBtn.style.color = 'var(--neon-pink)';
+    }
+
+    // HD Progress Bar Logic
+    function updateProgress(video) {
+        const bar = video.parentElement.querySelector('.progress-bar');
+        const percentage = (video.currentTime / video.duration) * 100;
+        bar.style.width = percentage + "%";
+    }
+
+    // Share API (Triggers native phone sharing)
+    async function shareVideo() {
+        try {
+            await navigator.share({
+                title: 'Fexin Video',
+                text: 'Check out this cool video on Fexin!',
+                url: window.location.href,
+            });
+        } catch (err) {
+            alert("Link copied!");
+        }
+    }
+</script>
+<nav>
+    <button onclick="showSection('home')">🏠 Home</button>
+    <button onclick="showSection('chat')">👥 Friends</button>
+    <button onclick="showSection('profile')">👤 Profile</button>
+</nav>
+
+<script>
+    function showSection(section) {
+        // Find our three main screens
+        const home = document.getElementById('main-feed');
+        const chat = document.getElementById('chat-section');
+        const profile = document.getElementById('profile-section');
+
+        // Hide them all
+        if (home) home.style.display = 'none';
+        if (chat) chat.style.display = 'none';
+        if (profile) profile.style.display = 'none';
+
+        // Show the one we want
+        if (section === 'home' && home) home.style.display = 'block';
+        if (section === 'chat' && chat) chat.style.display = 'block';
+        if (section === 'profile' && profile) profile.style.display = 'block';
+    }
+</script>
+<script>
+    // Cache the elements once at the start
+    const sections = {
+        home: document.getElementById('main-feed'),
+        chat: document.getElementById('chat-section'),
+        profile: document.getElementById('profile-section')
+    };
+
+    function showSection(sectionName) {
+        // Hide all sections using a loop
+        Object.values(sections).forEach(section => {
+            if (section) section.style.display = 'none';
+        });
+
+        // Show the target section
+        if (sections[sectionName]) {
+            sections[sectionName].style.display = 'block';
+        }
+    }
+</script>
+<div id="main-feed" class="feed-container">
+    <div class="video-post">
+        <div class="video-placeholder">
+            <p>Video Playing...</p>
+        </div>
+        <div class="post-overlay">
+            <h3>@Alex_Fexin</h3>
+            <p>Check out this HD view! #Fexin #NewApp</p>
+        </div>
+        <div class="side-actions">
+            <button class="action-btn">❤️ 1.2k</button>
+            <button class="action-btn">💬 45</button>
+            <button class="action-btn">🔗</button>
+        </div>
+    </div>
+</div>
+<div id="notification-toast" class="notification-toast">
+    <div class="notif-content">
+        <span id="notif-message">Someone liked your video!</span>
+    </div>
+</div>
+<div class="side-actions">
+    <div class="user-profile-trigger" onclick="showSection('profile')">
+        <img src="https://via.placeholder.com/50" alt="Profile" class="avatar-img">
+        <div class="follow-badge">+</div>
+    </div>
+
+    <button class="action-btn" onclick="sendNotification('like', 'User')">❤️ 1.2k</button>
+    <button class="action-btn">💬 45</button>
+    <button class="action-btn">🔗</button>
+</div>
+<div class="user-profile-trigger">
+    <img src="https://via.placeholder.com/50" alt="Profile" class="avatar-img" onclick="showSection('profile')">
+    <button id="follow-btn" class="follow-badge" onclick="toggleFollow()">+</button>
+</div>
+<div class="side-actions">
+    <div class="user-profile-container">
+        <img src="https://via.placeholder.com/45" alt="Profile" class="avatar-img" onclick="showSection('profile')">
+        <button id="follow-btn" class="follow-badge" onclick="toggleFollow()">+</button>
+    </div>
+
+    <button class="action-btn">❤️ <br><span>1.2k</span></button>
+    <button class="action-btn">💬 <br><span>45</span></button>
+    <button class="action-btn">🔗</button>
+</div>
+<div class="video-container" ondblclick="heartPop(event)">
+    <div id="heart-animation" class="heart-icon">❤️</div>
+    </div>
+<div id="comment-drawer" class="comment-drawer">
+    <div class="drawer-handle" onclick="closeComments()"></div>
+    <div class="drawer-header">
+        <h3>Comments (45)</h3>
+        <span class="close-btn" onclick="closeComments()">✕</span>
+    </div>
+    <div class="comments-list">
+        <div class="comment-item">
+            <img src="https://via.placeholder.com/30" class="comment-avatar">
+            <div class="comment-text">
+                <strong>@Sarah_Dev</strong>
+                <p>This HD quality is insane! 🔥</p>
+            </div>
+        </div>
+    </div>
+    <div class="comment-input-area">
+        <input type="text" placeholder="Add a comment...">
+        <button onclick="sendNotification('comment', 'You')">Post</button>
+    </div>
+</div>
+<button class="action-btn" onclick="openComments()">💬 <br><span>45</span></button>
